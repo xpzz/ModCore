@@ -24,7 +24,7 @@
 #include "Define.h"
 #include "revision.h"
 
-#define _PACKAGENAME "TrinityCore "
+#define _PACKAGENAME "ModCore "
 
 #if TRINITY_ENDIAN == TRINITY_BIGENDIAN
 # define _ENDIAN_STRING "big-endian"
@@ -34,11 +34,11 @@
 
 #if PLATFORM == PLATFORM_WINDOWS
 # ifdef _WIN64
-#  define _FULLVERSION _PACKAGENAME "Hash: " _HASH " (Win64, "_BUILD_DIRECTIVE " (" _ENDIAN_STRING "))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win64, "ModWorld Server " ("Thanks to TC-FC-CC"))"
 # else
-#  define _FULLVERSION _PACKAGENAME "Hash: " _HASH " (Win32, " _BUILD_DIRECTIVE " (" _ENDIAN_STRING "))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win32, " ModWorld Server" ("Thanks to TC-FC-CC"))"
 # endif
 #else
-#  define _FULLVERSION _PACKAGENAME "Hash: " _HASH " (Unix, " _BUILD_DIRECTIVE " (" _ENDIAN_STRING "))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Unix, " ModWorld Server " ("Thanks to TC-FC-CC"))"
 #endif
 #endif
