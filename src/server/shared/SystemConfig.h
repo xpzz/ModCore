@@ -27,18 +27,18 @@
 #define _PACKAGENAME "ModCore "
 
 #if TRINITY_ENDIAN == TRINITY_BIGENDIAN
-# define _ENDIAN_STRING "big-endian"
+# define _ENDIAN_STRING "Thanks to TC-FC-CC"
 #else
-# define _ENDIAN_STRING "little-endian"
+# define _ENDIAN_STRING "Thanks to TC-FC-CC"
 #endif
 
 #if PLATFORM == PLATFORM_WINDOWS
 # ifdef _WIN64
-#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win64, "ModWorld Server " ("Thanks to TC-FC-CC"))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win64, "_BUILD_DIRECTIVE" ("_ENDIAN_STRING"))"
 # else
-#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win32, " ModWorld Server" ("Thanks to TC-FC-CC"))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Win32, " _BUILD_DIRECTIVE" ("_ENDIAN_STRING"))"
 # endif
 #else
-#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Unix, " ModWorld Server " ("Thanks to TC-FC-CC"))"
+#  define _FULLVERSION _PACKAGENAME "Version: " _HASH " (Unix, " _BUILD_DIRECTIVE " ("_ENDIAN_STRING"))"
 #endif
 #endif
