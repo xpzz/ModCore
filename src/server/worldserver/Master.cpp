@@ -126,15 +126,13 @@ int Master::Run()
     sLog->outString("%s (worldserver-daemon)", _FULLVERSION);
     sLog->outString("<Ctrl-C> to stop.\n");
 
-    sLog->outString(" ______                       __");
-    sLog->outString("/\\__  _\\       __          __/\\ \\__");
-    sLog->outString("\\/_/\\ \\/ _ __ /\\_\\    ___ /\\_\\ \\ ,_\\  __  __");
-    sLog->outString("   \\ \\ \\/\\`'__\\/\\ \\ /' _ `\\/\\ \\ \\ \\/ /\\ \\/\\ \\");
-    sLog->outString("    \\ \\ \\ \\ \\/ \\ \\ \\/\\ \\/\\ \\ \\ \\ \\ \\_\\ \\ \\_\\ \\");
-    sLog->outString("     \\ \\_\\ \\_\\  \\ \\_\\ \\_\\ \\_\\ \\_\\ \\__\\\\/`____ \\");
-    sLog->outString("      \\/_/\\/_/   \\/_/\\/_/\\/_/\\/_/\\/__/ `/___/> \\");
-    sLog->outString("                                 C O R E  /\\___/");
-    sLog->outString("http://TrinityCore.org                    \\/__/\n");
+ sLog->outString(" ____    ____               __   ______     ");                    
+ sLog->outString("|_   \  /   _|             |  ].' ___  |       ");                 
+ sLog->outString("  |   \/   |   .--.    .--.| |/ .'   \_|  .--.   _ .--.  .---.  ");
+ sLog->outString("  | |\  /| | / .'`\ \/ /'`\' || |       / .'`\ \[ `/'`\]/ /__\\ ");
+ sLog->outString(" _| |_\/_| |_| \__. || \__/  |\ `.___.'\| \__. | | |    | \__., ");
+ sLog->outString("|_____||_____|'.__.'  '.__.;__]`.____ .' '.__.' [___]    '.__.' ");
+    sLog->outString("http://www.modworldserver.com.br");
 
 #ifdef USE_SFMT_FOR_RNG
     sLog->outString("\n");
