@@ -185,7 +185,6 @@ class boss_blood_council_controller : public CreatureScript
             void Reset()
             {
                 events.Reset();
-                me->SetReactState(REACT_PASSIVE);
                 _invocationStage = 0;
                 _resetCounter = 0;
 
@@ -403,7 +402,11 @@ class boss_prince_keleseth_icc : public CreatureScript
             {
                 events.Reset();
                 summons.DespawnAll();
-
+				JustReachedHome();
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
+		        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_OOC_NOT_ATTACKABLE);
+                me->RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
+                me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);				
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE);
                 _isEmpowered = false;
                 me->SetHealth(_spawnHealth);
@@ -411,6 +414,8 @@ class boss_prince_keleseth_icc : public CreatureScript
                 me->SetReactState(REACT_DEFENSIVE);
                 if (IsHeroic())
                     DoCast(me, SPELL_SHADOW_PRISON);
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
+				
             }
 
             void EnterCombat(Unit* /*who*/)
@@ -603,7 +608,11 @@ class boss_prince_taldaram_icc : public CreatureScript
             {
                 events.Reset();
                 summons.DespawnAll();
-
+				JustReachedHome();
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
+		        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_OOC_NOT_ATTACKABLE);
+                me->RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
+                me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE);
                 _isEmpowered = false;
                 me->SetHealth(_spawnHealth);
@@ -611,6 +620,7 @@ class boss_prince_taldaram_icc : public CreatureScript
                 me->SetReactState(REACT_DEFENSIVE);
                 if (IsHeroic())
                     DoCast(me, SPELL_SHADOW_PRISON);
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
             }
 
             void MoveInLineOfSight(Unit* /*who*/)
@@ -806,6 +816,11 @@ class boss_prince_valanar_icc : public CreatureScript
             {
                 events.Reset();
                 summons.DespawnAll();
+				JustReachedHome();
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
+		        me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_OOC_NOT_ATTACKABLE);
+                me->RemoveFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_DEAD);
+                me->RemoveFlag(UNIT_FIELD_FLAGS_2, UNIT_FLAG2_FEIGN_DEATH);
 
                 me->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_OOC_NOT_ATTACKABLE);
                 _isEmpowered = false;
@@ -814,6 +829,7 @@ class boss_prince_valanar_icc : public CreatureScript
                 me->SetReactState(REACT_DEFENSIVE);
                 if (IsHeroic())
                     DoCast(me, SPELL_SHADOW_PRISON);
+				me->RemoveAurasDueToSpell(SPELL_FEIGN_DEATH);
             }
 
             void MoveInLineOfSight(Unit* /*who*/)
