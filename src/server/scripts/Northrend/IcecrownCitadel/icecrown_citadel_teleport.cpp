@@ -69,6 +69,7 @@ class icecrown_citadel_teleport : public GameObjectScript
                 //Preload the Lich King's platform before teleporting player to there
                 if (action == FROZEN_THRONE_TELEPORT)
                     player->GetMap()->LoadGrid(530.3f, -2122.67f);
+					
                 player->CastSpell(player, spell, true);
 
                 //Give him 2 tries, just in case if player will fall through the ground
