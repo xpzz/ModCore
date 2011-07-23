@@ -1,31 +1,34 @@
 /*
-* Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-* more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Based on /dev/rsa modified by Vlad
+// Need correct timers
 
 #include "ScriptPCH.h"
 #include "ruby_sanctum.h"
 
 enum BossSpells
 {
-    SPELL_ENRAGE = 78722, //soft enrage + fire nova
-    SPELL_FLAME_BREATH = 74404,
-    SPELL_BEACON = 74453, //mark for conflag, in enter to fly phase, 2 in 10, 5 in 25
-    SPELL_CONFLAGATION = 74452, // after fly up
-    SPELL_CONFLAGATION_1 = 74454, // Triggered?
-    SPELL_CONFLAGATION_2 = 74456, // Aura
+    SPELL_ENRAGE                     = 78722, //soft enrage + fire nova
+    SPELL_FLAME_BREATH               = 74404,
+    SPELL_BEACON                     = 74453, //mark for conflag, in enter to fly phase, 2 in 10, 5 in 25
+    SPELL_CONFLAGATION               = 74452, // after fly up
+    SPELL_CONFLAGATION_1             = 74454, // Triggered?
+    SPELL_CONFLAGATION_2             = 74456, // Aura
 };
 
 struct Locations
@@ -35,8 +38,8 @@ struct Locations
 
 static Locations SpawnLoc[]=
 {
-    {3151.3898f, 636.8519f, 78.7396f}, // 0 Saviana start point
-    {3149.635f, 668.9644f, 90.507f}, // 1 Saviana fly phase, o=4,69
+    {3151.3898f, 636.8519f, 78.7396f},  // 0 Saviana start point
+    {3149.635f, 668.9644f, 90.507f},    // 1 Saviana fly phase, o=4,69
 };
 
 #define TARGETS_10 2
@@ -78,6 +81,8 @@ public:
             if(!pInstance)
                 return;
             me->SetRespawnDelay(7*DAY);
+            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
             if (me->isAlive()) pInstance->SetData(TYPE_RAGEFIRE, NOT_STARTED);
 
             m_uiFlameBreathTimer = urand(5*IN_MILLISECONDS,15*IN_MILLISECONDS);
@@ -153,7 +158,7 @@ public:
                 pInstance->SetData(TYPE_RAGEFIRE, FAIL);
         }
 
-        void EnterCombat(Unit *who)
+        void EnterCombat(Unit *who) 
         {
             if(!pInstance) return;
 
@@ -263,7 +268,7 @@ public:
                      if (m_uiConflagrateTimer <= diff)
                      {
                          if (conflagated)
-                         {
+                         { 
                              //DoCast(SPELL_CONFLAGATION_1);
                              doBeacon(false);
                          }
@@ -345,7 +350,7 @@ public:
                      if (m_uiConflagrateTimer <= diff)
                      {
                          if (conflagated)
-                         {
+                         { 
                               //DoCast(SPELL_CONFLAGATION_1);
                               doBeacon(false);
                          }

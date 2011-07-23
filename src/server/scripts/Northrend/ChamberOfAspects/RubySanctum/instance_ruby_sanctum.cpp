@@ -1,19 +1,21 @@
 /*
-* Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-* more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+// Based on /dev/rsa modified by Vlad
+// TODO:  Trash mobs, spawn and removal of fire ring/walls, spawn of halion
 
 #include "ScriptPCH.h"
 #include "ruby_sanctum.h"
@@ -131,71 +133,55 @@ public:
 
         void OpenAllDoors()
         {
-            if (m_auiEncounter[TYPE_RAGEFIRE] == DONE &&
+            if (m_auiEncounter[TYPE_RAGEFIRE] == DONE && 
                 m_auiEncounter[TYPE_BALTHARUS] == DONE )
                      OpenDoor(m_uiFlameWallsGUID);
             else CloseDoor(m_uiFlameWallsGUID);
-			
         }
 
         void UpdateWorldState(bool command, uint32 value)
         {
-			Map::PlayerList const &players = instance->GetPlayers();
+           Map::PlayerList const &players = instance->GetPlayers();
 
-			if (command)
-			{
-				for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
-				{
-					if(Player* pPlayer = i->getSource())
-					{
-						if(pPlayer->isAlive())
-						{
-							pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,0);
-							if (pPlayer->HasAura(74807))
-							{
-								pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_COUNT_T, 100 - value);
-							}
-							else
-							{
-								pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_COUNT_R, value);
-							}
-							pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,1);
-						}
-					}
-				}
-			}
-			else
-			{
-				for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
-				{
-					if(Player* pPlayer = i->getSource())
-					{
-						if(pPlayer->isAlive())
-						{
-							pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,0);
-						}
-					}
-				}
-			}
-		}
+           if (command)
+           {
+           for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
+                  if(Player* pPlayer = i->getSource())
+                        if(pPlayer->isAlive())
+                        {
+                            pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,0);
+                            if (pPlayer->HasAura(74807))
+                                pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_COUNT_T, 100 - value);
+                            else pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_COUNT_R, value);
+                            pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,1);
+                        }
+           }
+           else
+           {
+           for (Map::PlayerList::const_iterator i = players.begin(); i != players.end(); ++i)
+                  if(Player* pPlayer = i->getSource())
+                        if(pPlayer->isAlive())
+                            pPlayer->SendUpdateWorldState(UPDATE_STATE_UI_SHOW,0);
+           }
+        }
 
         void OnCreatureCreate(Creature* pCreature)
         {
             switch(pCreature->GetEntry())
             {
-                case NPC_HALION_REAL: m_uiHalion_pGUID = pCreature->GetGUID();break;
-	            case NPC_HALION_TWILIGHT: m_uiHalion_tGUID = pCreature->GetGUID(); break;
-                case NPC_HALION_CONTROL: m_uiHalionControlGUID = pCreature->GetGUID(); break;
-                case NPC_RAGEFIRE: m_uiRagefireGUID = pCreature->GetGUID(); break;
-                case NPC_ZARITHIAN: m_uiZarithianGUID = pCreature->GetGUID(); break;
-                case NPC_BALTHARUS: m_uiBaltharusGUID = pCreature->GetGUID(); break;
-                case NPC_BALTHARUS_TARGET: m_uiBaltharusTargetGUID = pCreature->GetGUID(); break;
-                case NPC_CLONE: m_uiCloneGUID = pCreature->GetGUID(); break;
-                case NPC_XERESTRASZA: m_uiXerestraszaGUID = pCreature->GetGUID(); break;
-                case NPC_SHADOW_PULSAR_N: m_uiOrbNGUID = pCreature->GetGUID(); break;
-                case NPC_SHADOW_PULSAR_S: m_uiOrbSGUID = pCreature->GetGUID(); break;
-                case NPC_ORB_ROTATION_FOCUS: m_uiOrbFocusGUID = pCreature->GetGUID(); break;
-                case NPC_ORB_CARRIER: m_uiOrbCarrierGUID = pCreature->GetGUID(); break;
+                case NPC_HALION_REAL:             m_uiHalion_pGUID = pCreature->GetGUID();        break;
+                case NPC_HALION_TWILIGHT:         m_uiHalion_tGUID = pCreature->GetGUID();        break;
+                case NPC_HALION_CONTROL:          m_uiHalionControlGUID = pCreature->GetGUID();   break;
+                case NPC_RAGEFIRE:                m_uiRagefireGUID = pCreature->GetGUID();        break;
+                case NPC_ZARITHIAN:               m_uiZarithianGUID = pCreature->GetGUID();       break;
+                case NPC_BALTHARUS:               m_uiBaltharusGUID = pCreature->GetGUID();       break;
+                case NPC_BALTHARUS_TARGET:        m_uiBaltharusTargetGUID = pCreature->GetGUID(); break;
+                case NPC_CLONE:                   m_uiCloneGUID = pCreature->GetGUID();           break;
+                case NPC_XERESTRASZA:             m_uiXerestraszaGUID = pCreature->GetGUID();     break;
+                case NPC_SHADOW_PULSAR_N:         m_uiOrbNGUID = pCreature->GetGUID();            break;
+                case NPC_SHADOW_PULSAR_S:         m_uiOrbSGUID = pCreature->GetGUID();            break;
+                case NPC_ORB_ROTATION_FOCUS:      m_uiOrbFocusGUID = pCreature->GetGUID();        break;
+                case NPC_ORB_CARRIER:             m_uiOrbCarrierGUID = pCreature->GetGUID();      break;
             }
         }
 
@@ -203,12 +189,12 @@ public:
         {
             switch(pGo->GetEntry())
             {
-                case GO_HALION_PORTAL_1: m_uiHalionPortal1GUID = pGo->GetGUID(); break;
-                case GO_HALION_PORTAL_2: m_uiHalionPortal2GUID = pGo->GetGUID(); break;
-                case GO_HALION_PORTAL_3: m_uiHalionPortal3GUID = pGo->GetGUID(); break;
-                case GO_FLAME_WALLS: m_uiFlameWallsGUID = pGo->GetGUID(); break;
-                case GO_FLAME_RING: m_uiFlameRingGUID = pGo->GetGUID(); break;
-                case GO_FIRE_FIELD: m_uiFireFieldGUID = pGo->GetGUID(); break;
+                case GO_HALION_PORTAL_1:  m_uiHalionPortal1GUID = pGo->GetGUID();  break;
+                case GO_HALION_PORTAL_2:  m_uiHalionPortal2GUID = pGo->GetGUID();  break;
+                case GO_HALION_PORTAL_3:  m_uiHalionPortal3GUID = pGo->GetGUID();  break;
+                case GO_FLAME_WALLS:      m_uiFlameWallsGUID = pGo->GetGUID();     break;
+                case GO_FLAME_RING:       m_uiFlameRingGUID = pGo->GetGUID();      break;
+                case GO_FIRE_FIELD:       m_uiFireFieldGUID = pGo->GetGUID();      break;
             }
             OpenAllDoors();
         }
@@ -217,14 +203,14 @@ public:
         {
             switch(uiType)
             {
-                case TYPE_EVENT: m_auiEncounter[uiType] = uiData; uiData = NOT_STARTED; break;
-                case TYPE_RAGEFIRE: m_auiEncounter[uiType] = uiData;
+                case TYPE_EVENT:        m_auiEncounter[uiType] = uiData; uiData = NOT_STARTED; break;
+                case TYPE_RAGEFIRE:     m_auiEncounter[uiType] = uiData; 
                                            OpenAllDoors();
                                         break;
-                case TYPE_BALTHARUS: m_auiEncounter[uiType] = uiData;
+                case TYPE_BALTHARUS:    m_auiEncounter[uiType] = uiData; 
                                            OpenAllDoors();
                                         break;
-                case TYPE_XERESTRASZA: m_auiEncounter[uiType] = uiData;
+                case TYPE_XERESTRASZA:  m_auiEncounter[uiType] = uiData;
                                         if (uiData == IN_PROGRESS)
                                            OpenDoor(m_uiFireFieldGUID);
                                         else if (uiData == NOT_STARTED)
@@ -242,7 +228,7 @@ public:
                                            };
                                         }
                                         break;
-                case TYPE_ZARITHRIAN: m_auiEncounter[uiType] = uiData;
+                case TYPE_ZARITHRIAN:    m_auiEncounter[uiType] = uiData;
                                         if (uiData == DONE)
                                         {
                                            OpenDoor(m_uiFlameWallsGUID);
@@ -254,7 +240,7 @@ public:
                                         else if (uiData == FAIL)
                                            OpenDoor(m_uiFlameWallsGUID);
                                         break;
-                case TYPE_HALION: m_auiEncounter[uiType] = uiData;
+                case TYPE_HALION:       m_auiEncounter[uiType] = uiData;
                                         if (uiData == IN_PROGRESS)
                                         {
                                             CloseDoor(m_uiFlameRingGUID);
@@ -264,23 +250,18 @@ public:
                                               OpenDoor(m_uiFlameRingGUID);
                                         }
                                         break;
-                case TYPE_HALION_EVENT: m_auiHalionEvent = uiData; uiData = NOT_STARTED; break;
-                case TYPE_EVENT_TIMER: m_auiEventTimer = uiData; uiData = NOT_STARTED; break;
+                case TYPE_HALION_EVENT: m_auiHalionEvent  = uiData; uiData = NOT_STARTED; break;
+                case TYPE_EVENT_TIMER:  m_auiEventTimer = uiData; uiData = NOT_STARTED;   break;
 
-                case DATA_ORB_DIRECTION: m_auiOrbDirection = uiData; uiData = NOT_STARTED; break;
-                case DATA_ORB_N: m_auiOrbNState = uiData; uiData = NOT_STARTED; break;
-                case DATA_ORB_S: m_auiOrbSState = uiData; uiData = NOT_STARTED; break;
+                case DATA_ORB_DIRECTION:        m_auiOrbDirection = uiData; uiData = NOT_STARTED; break;
+                case DATA_ORB_N:                m_auiOrbNState = uiData; uiData = NOT_STARTED;    break;
+                case DATA_ORB_S:                m_auiOrbSState = uiData; uiData = NOT_STARTED;    break;
                 case TYPE_COUNTER:
-                                    if (uiData == COUNTER_OFF)
-                                    {
-                                        UpdateWorldState(false,0);
-                                    }
-                                    else 
-                                    {
-                                        UpdateWorldState(true,uiData);
-                                    }
-                                    uiData = NOT_STARTED;
-                                    break;
+                                       if (uiData == 0)
+                                           UpdateWorldState(false,0);
+                                       else UpdateWorldState(true,uiData);
+                                       uiData = NOT_STARTED;
+                                       break;
             }
 
             if (uiData == DONE)
@@ -308,18 +289,18 @@ public:
         {
             switch(uiType)
             {
-                case TYPE_RAGEFIRE: return m_auiEncounter[uiType];
-                case TYPE_BALTHARUS: return m_auiEncounter[uiType];
-                case TYPE_XERESTRASZA: return m_auiEncounter[uiType];
-                case TYPE_ZARITHRIAN: return m_auiEncounter[uiType];
-                case TYPE_HALION: return m_auiEncounter[uiType];
+                case TYPE_RAGEFIRE:      return m_auiEncounter[uiType];
+                case TYPE_BALTHARUS:     return m_auiEncounter[uiType];
+                case TYPE_XERESTRASZA:   return m_auiEncounter[uiType];
+                case TYPE_ZARITHRIAN:    return m_auiEncounter[uiType];
+                case TYPE_HALION:        return m_auiEncounter[uiType];
 
-                case TYPE_EVENT: return m_auiEncounter[uiType];
+                case TYPE_EVENT:         return m_auiEncounter[uiType];
 
-                case TYPE_HALION_EVENT: return m_auiHalionEvent;
+                case TYPE_HALION_EVENT:  return m_auiHalionEvent;
 
-                case TYPE_EVENT_TIMER: return m_auiEventTimer;
-                case TYPE_EVENT_NPC: switch (m_auiEncounter[TYPE_EVENT])
+                case TYPE_EVENT_TIMER:   return m_auiEventTimer;
+                case TYPE_EVENT_NPC:     switch (m_auiEncounter[TYPE_EVENT])
                                          {
                                               case 10:
                                               case 20:
@@ -341,9 +322,9 @@ public:
                                          };
                                          return 0;
 
-                case DATA_ORB_DIRECTION: return m_auiOrbDirection;
-                case DATA_ORB_N: return m_auiOrbNState;
-                case DATA_ORB_S: return m_auiOrbSState;
+                case DATA_ORB_DIRECTION:        return m_auiOrbDirection;
+                case DATA_ORB_N:                return m_auiOrbNState;
+                case DATA_ORB_S:                return m_auiOrbSState;
 
             }
             return 0;
@@ -353,28 +334,28 @@ public:
         {
             switch(uiData)
             {
-                case NPC_BALTHARUS: return m_uiBaltharusGUID;
-                case NPC_CLONE: return m_uiCloneGUID;
-                case NPC_ZARITHIAN: return m_uiZarithianGUID;
-                case NPC_RAGEFIRE: return m_uiRagefireGUID;
-                case NPC_HALION_REAL: return m_uiHalion_pGUID;
-                case NPC_HALION_TWILIGHT: return m_uiHalion_tGUID;
-                case NPC_HALION_CONTROL: return m_uiHalionControlGUID;
-                case NPC_XERESTRASZA: return m_uiXerestraszaGUID;
+                case NPC_BALTHARUS:        return m_uiBaltharusGUID;
+                case NPC_CLONE:            return m_uiCloneGUID;
+                case NPC_ZARITHIAN:        return m_uiZarithianGUID;
+                case NPC_RAGEFIRE:         return m_uiRagefireGUID;
+                case NPC_HALION_REAL:      return m_uiHalion_pGUID;
+                case NPC_HALION_TWILIGHT:  return m_uiHalion_tGUID;
+                case NPC_HALION_CONTROL:   return m_uiHalionControlGUID;
+                case NPC_XERESTRASZA:      return m_uiXerestraszaGUID;
                 case NPC_BALTHARUS_TARGET: return m_uiBaltharusTargetGUID;
 
                 case GO_FLAME_WALLS: return m_uiFlameWallsGUID;
-                case GO_FLAME_RING: return m_uiFlameRingGUID;
-                case GO_FIRE_FIELD: return m_uiFireFieldGUID;
+                case GO_FLAME_RING:  return m_uiFlameRingGUID;
+                case GO_FIRE_FIELD:  return m_uiFireFieldGUID;
 
                 case GO_HALION_PORTAL_1: return m_uiHalionPortal1GUID;
                 case GO_HALION_PORTAL_2: return m_uiHalionPortal2GUID;
                 case GO_HALION_PORTAL_3: return m_uiHalionPortal3GUID;
 
-                case NPC_SHADOW_PULSAR_N: return m_uiOrbNGUID;
-                case NPC_SHADOW_PULSAR_S: return m_uiOrbSGUID;
+                case NPC_SHADOW_PULSAR_N:    return m_uiOrbNGUID;
+                case NPC_SHADOW_PULSAR_S:    return m_uiOrbSGUID;
                 case NPC_ORB_ROTATION_FOCUS: return m_uiOrbFocusGUID;
-                case NPC_ORB_CARRIER: return m_uiOrbCarrierGUID;
+                case NPC_ORB_CARRIER:        return m_uiOrbCarrierGUID;
             }
             return 0;
         }
@@ -408,8 +389,246 @@ public:
     };
 };
 
+/*##############################
+# npc_convocadora_carboescala (40417)
+###############################*/
+
+enum ConvocadoraSpells
+{
+    SPELL_AGOSTAR = 75412,
+    SPELL_OLA_LLAMAS = 75413
+};
+
+class npc_convocadora_carboescala : public CreatureScript
+{
+public:
+    npc_convocadora_carboescala() : CreatureScript("npc_convocadora_carboescala") { }
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_convocadora_carboescalaAI(creature);
+    }
+	
+    struct npc_convocadora_carboescalaAI : public ScriptedAI
+    {
+        npc_convocadora_carboescalaAI(Creature* creature) : ScriptedAI(creature) 
+		{
+		}
+        
+        uint32 uiAgostarTimer;
+        uint32 uiOlaTimer;
+        
+
+        void Reset()
+        {
+            uiAgostarTimer = 3000;
+            uiOlaTimer = urand(8*IN_MILLISECONDS,13*IN_MILLISECONDS);     
+        }
+
+        void UpdateAI(const uint32 uiDiff)
+        {
+            if (!UpdateVictim())
+                return;
+
+            if (uiAgostarTimer <= uiDiff)
+            {
+                if (Unit* pTarget = SelectTarget(SELECT_TARGET_RANDOM,0))
+                {
+                    if (pTarget && pTarget->isAlive())
+                        DoCast(pTarget, SPELL_AGOSTAR);
+                }
+                uiAgostarTimer = 8000;
+            }else uiAgostarTimer -= uiDiff;
+
+            if (uiOlaTimer <= uiDiff)
+            {
+                DoCast(me, SPELL_OLA_LLAMAS);
+                uiOlaTimer = urand(8*IN_MILLISECONDS,13*IN_MILLISECONDS);
+            }else uiOlaTimer -= uiDiff;
+
+            DoMeleeAttackIfReady();
+        }
+
+        void JustDied(Unit* pKiller) { }
+    };
+};
+
+/*##############################
+# npc_acometedor_carboescala (40419)
+###############################*/
+
+enum AcometedorSpells
+{
+    SPELL_RAJAR = 15284,
+    SPELL_OLA_CHOQUE = 75417
+};
+
+class npc_acometedor_carboescala : public CreatureScript
+{
+public:
+    npc_acometedor_carboescala() : CreatureScript("npc_acometedor_carboescala") { }
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_acometedor_carboescalaAI(creature);
+    }
+	
+    struct npc_acometedor_carboescalaAI : public ScriptedAI
+    {
+        npc_acometedor_carboescalaAI(Creature* creature) : ScriptedAI(creature) 
+		{
+		}
+        
+        uint32 uiRajarTimer;
+        uint32 uiOlaChoqueTimer;
+        
+
+        void Reset()
+        {
+            uiRajarTimer = 5000;
+            uiOlaChoqueTimer = 9000;     
+        }
+
+        void UpdateAI(const uint32 uiDiff)
+        {
+            if (!UpdateVictim())
+                return;
+
+            if (uiRajarTimer <= uiDiff)
+            {
+                DoCast(me->getVictim(), SPELL_RAJAR);
+                uiRajarTimer = 11000;
+            }else uiRajarTimer -= uiDiff;
+
+            if (uiOlaChoqueTimer <= uiDiff)
+            {
+                DoCast(me, SPELL_OLA_CHOQUE);
+                uiOlaChoqueTimer = 17000;
+            }else uiOlaChoqueTimer -= uiDiff;
+
+            DoMeleeAttackIfReady();
+        }
+
+        void JustDied(Unit* pKiller) { }
+    };
+};
+
+/*##############################
+# npc_elite_carboescala (40421)
+###############################*/
+
+enum EliteSpells
+{
+    SPELL_MACHACAR_CRANEOS = 15621 
+};
+
+class npc_elite_carboescala : public CreatureScript
+{
+public:
+    npc_elite_carboescala() : CreatureScript("npc_elite_carboescala") { }
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_elite_carboescalaAI(creature);
+    }
+	
+    struct npc_elite_carboescalaAI : public ScriptedAI
+    {
+        npc_elite_carboescalaAI(Creature* creature) : ScriptedAI(creature) 
+		{
+		}
+        
+        uint32 uiMachaqueTimer;
+   
+
+        void Reset()
+        {
+            uiMachaqueTimer = 5000;  
+        }
+
+        void UpdateAI(const uint32 uiDiff)
+        {
+            if (!UpdateVictim())
+                return;
+
+            if (uiMachaqueTimer <= uiDiff)
+            {
+                DoCast(me->getVictim(), SPELL_MACHACAR_CRANEOS);
+				uiMachaqueTimer = 12000;
+            }else uiMachaqueTimer -= uiDiff;
+
+            DoMeleeAttackIfReady();
+        }
+
+        void JustDied(Unit* pKiller) { }
+    };
+};
+
+/*##############################
+# npc_comandante_carboescala (40423)
+###############################*/
+
+enum ComandanteSpells
+{
+    SPELL_GOLPE_MORTAL = 13737,
+    SPELL_GRITO_CONVOCACION = 75414
+};
+
+class npc_comandante_carboescala : public CreatureScript
+{
+public:
+    npc_comandante_carboescala() : CreatureScript("npc_comandante_carboescala") { }
+
+    CreatureAI* GetAI(Creature* creature) const
+    {
+        return new npc_comandante_carboescalaAI(creature);
+    }
+	
+    struct npc_comandante_carboescalaAI : public ScriptedAI
+    {
+        npc_comandante_carboescalaAI(Creature* creature) : ScriptedAI(creature) 
+		{
+		}
+        
+        uint32 uiGolpeTimer;
+        uint32 uiGritoTimer;
+        
+
+        void Reset()
+        {
+            uiGolpeTimer = 9000;
+            uiGritoTimer = 1000;     
+        }
+
+        void UpdateAI(const uint32 uiDiff)
+        {
+            if (!UpdateVictim())
+                return;
+
+            if (uiGolpeTimer <= uiDiff)
+            {
+                DoCast(me->getVictim(), SPELL_GOLPE_MORTAL);
+				uiGolpeTimer = 9000;
+            }else uiGolpeTimer -= uiDiff;
+
+            if (uiGritoTimer <= uiDiff)
+            {
+                DoCast(me, SPELL_GRITO_CONVOCACION);
+                uiGritoTimer = 100000;
+            }else uiGritoTimer -= uiDiff;
+
+            DoMeleeAttackIfReady();
+        }
+
+        void JustDied(Unit* pKiller) { }
+    };
+};
 
 void AddSC_instance_ruby_sanctum()
 {
     new instance_ruby_sanctum;
+    new npc_convocadora_carboescala;
+    new npc_acometedor_carboescala;
+    new npc_elite_carboescala;
+    new npc_comandante_carboescala;
 }

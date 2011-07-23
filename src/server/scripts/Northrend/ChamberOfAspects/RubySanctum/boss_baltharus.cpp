@@ -1,19 +1,23 @@
 /*
-* Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-* more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright (C) 2008-2010 TrinityCore <http://www.trinitycore.org/>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+// Based on /dev/rsa modified by Vlad
+// TODO:  Trash mobs, spawn and removal of fire ring/walls, spawn of halion
+// Need correct timers
 
 #include "ScriptPCH.h"
 #include "ruby_sanctum.h"
@@ -26,26 +30,26 @@ struct Locations
 
 static Locations SpawnLoc[]=
 {
-    {3152.329834f, 359.41757f, 85.301605f}, // Baltharus target point
-    {3153.06f, 389.486f, 86.2596f}, // Baltharus initial point
+    {3152.329834f, 359.41757f, 85.301605f},    // Baltharus target point
+    {3153.06f, 389.486f, 86.2596f},            // Baltharus initial point
 };
 
 enum Equipment
 {
-    EQUIP_MAIN = 49888,
-    EQUIP_OFFHAND = EQUIP_NO_CHANGE,
-    EQUIP_RANGED = EQUIP_NO_CHANGE,
-    EQUIP_DONE = EQUIP_NO_CHANGE,
+    EQUIP_MAIN           = 49888,
+    EQUIP_OFFHAND        = EQUIP_NO_CHANGE,
+    EQUIP_RANGED         = EQUIP_NO_CHANGE,
+    EQUIP_DONE           = EQUIP_NO_CHANGE,
 };
 
 enum BossSpells
 {
-    SPELL_BLADE_TEMPEST = 75125, // every 22 secs
-    SPELL_ENERVATING_BRAND = 74502, // friendlys in 12yards = 74505
-    SPELL_REPELLING_WAVE = 74509, // once if call clone
-    SPELL_SABER_LASH = 40504, // every 10-15 secs
-    SPELL_SUMMON_CLONE = 74511, // summons npc 39899 (Clone)
-    SPELL_CHANNEL_SPELL = 76221, // Channeling dummy spell
+    SPELL_BLADE_TEMPEST              = 75125, // every 22 secs
+    SPELL_ENERVATING_BRAND           = 74502, // friendlys in 12yards = 74505
+    SPELL_REPELLING_WAVE             = 74509, // once if call clone
+    SPELL_SABER_LASH                 = 40504, // every 10-15 secs
+    SPELL_SUMMON_CLONE               = 74511, // summons npc 39899 (Clone)
+    SPELL_CHANNEL_SPELL              = 76221, // Channeling dummy spell
 };
 
 /*######
@@ -88,6 +92,8 @@ public:
 
             if (me->isAlive()) pInstance->SetData(TYPE_BALTHARUS, NOT_STARTED);
             me->SetRespawnDelay(7*DAY);
+            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
 
             uiStage = 0;
             pClone = NULL;
@@ -122,7 +128,7 @@ public:
             pInstance->SetData(TYPE_BALTHARUS, FAIL);
         }
 
-        void MoveInLineOfSight(Unit* pWho)
+        void MoveInLineOfSight(Unit* pWho) 
         {
             if(!pInstance || intro ||
                 pWho->GetTypeId() != TYPEID_PLAYER ||
@@ -137,8 +143,8 @@ public:
         {
             if (!pInstance) return;
 
-          // if (pDummyTarget && pDummyTarget->isSummon())
-          // pDummyTarget->ForcedDespawn();
+          //  if (pDummyTarget && pDummyTarget->isSummon()) 
+          //      pDummyTarget->ForcedDespawn();
 
             DoScriptText(-1666303,me);
             pInstance->SetData(TYPE_BALTHARUS, DONE);
@@ -198,7 +204,7 @@ public:
             if (!me || !me->isAlive())
                 return;
 
-            if(pDoneBy->GetGUID() == me->GetGUID())
+            if(pDoneBy->GetGUID() == me->GetGUID()) 
               return;
 
             if (pClone && pClone->isAlive())
@@ -335,6 +341,8 @@ public:
             m_uiSaberLashTimer = urand(10*IN_MILLISECONDS,15*IN_MILLISECONDS);
 
             me->SetRespawnDelay(7*DAY);
+            me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);
+            me->ApplySpellImmune(0, IMMUNITY_MECHANIC, MECHANIC_GRIP, true);
         }
 
         void KilledUnit(Unit* pVictim)
@@ -400,15 +408,15 @@ public:
 
 
 /*######
-## mob_xerestrasza
+##  mob_xerestrasza
 ######*/
 
 static Locations SpawnLocXer[]=
 {
-    {3155.540039f, 342.391998f, 84.596802f}, // 0 - start point
-    {3152.329834f, 359.41757f, 85.301605f}, // 1 - second say
-    {3152.078369f, 383.939178f, 86.337875f}, // 2 - other says and staying
-    {3154.99f, 535.637f, 72.8887f}, // 3 - Halion spawn point
+    {3155.540039f, 342.391998f, 84.596802f},   // 0 - start point
+    {3152.329834f, 359.41757f, 85.301605f},    // 1 - second say
+    {3152.078369f, 383.939178f, 86.337875f},   // 2 - other says and staying
+    {3154.99f, 535.637f, 72.8887f},            // 3 - Halion spawn point
 };
 
 class mob_xerestrasza : public CreatureScript
@@ -454,7 +462,7 @@ public:
         void MovementInform(uint32 type, uint32 id)
         {
             if (type != POINT_MOTION_TYPE || !movementstarted) return;
-            if (id == nextPoint)
+            if (id == nextPoint) 
             {
                 movementstarted = false;
                 pInstance->SetData(TYPE_EVENT,nextEvent);
@@ -480,7 +488,7 @@ public:
 
         void MoveInLineOfSight(Unit *who)
         {
-            if(!pInstance || !who || who->GetTypeId() != TYPEID_PLAYER)
+            if(!pInstance || !who || who->GetTypeId() != TYPEID_PLAYER) 
                 return;
 
             if (pInstance->GetData(TYPE_BALTHARUS) != DONE
