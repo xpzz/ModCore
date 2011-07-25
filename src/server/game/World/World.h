@@ -384,8 +384,28 @@ enum Rates
     RATE_DURABILITY_LOSS_PARRY,
     RATE_DURABILITY_LOSS_ABSORB,
     RATE_DURABILITY_LOSS_BLOCK,
+	RATE_PVP_RANK_EXTRA_HONOR,
     RATE_MOVESPEED,
     MAX_RATES
+};
+enum HonorKillPvPRank
+{
+    HKRANK00,
+    HKRANK01,
+    HKRANK02,
+    HKRANK03,
+    HKRANK04,
+    HKRANK05,
+    HKRANK06,
+    HKRANK07,
+    HKRANK08,
+    HKRANK09,
+    HKRANK10,
+    HKRANK11,
+    HKRANK12,
+    HKRANK13,
+    HKRANK14,
+    HKRANKMAX
 };
 
 /// Can be used in SMSG_AUTH_RESPONSE packet
@@ -644,6 +664,7 @@ class World
         static bool IsStopped() { return m_stopEvent; }
 
         void Update(uint32 diff);
+		uint32 pvp_ranks[HKRANKMAX];
 
         void UpdateSessions(uint32 diff);
         /// Set a server rate (see #Rates)

@@ -43,13 +43,14 @@ bool BattlefieldWG::SetupBattlefield()
     m_enable = sWorld->getBoolConfig(CONFIG_WINTERGRASP_ENABLE);
     m_MinPlayer = sWorld->getIntConfig(CONFIG_WINTERGRASP_PLR_MIN);
     m_MinLevel = sWorld->getIntConfig(CONFIG_WINTERGRASP_PLR_MIN_LVL);
-    m_BattleTime = sWorld->getIntConfig(CONFIG_WINTERGRASP_BATTLETIME) * MINUTE;
-    m_NoWarBattleTime = sWorld->getIntConfig(CONFIG_WINTERGRASP_NOBATTLETIME) * MINUTE;
+    m_BattleTime = sWorld->getIntConfig(CONFIG_WINTERGRASP_BATTLETIME) *60*1000;
+    m_NoWarBattleTime = sWorld->getIntConfig(CONFIG_WINTERGRASP_NOBATTLETIME)*60*1000;
     m_RestartAfterCrash = sWorld->getIntConfig(CONFIG_WINTERGRASP_RESTART_AFTER_CRASH) * MINUTE;
 
     m_TimeForAcceptInvite = 20;
-    m_StartGroupingTimer = 15 * MINUTE;
+    m_StartGroupingTimer = 15*60*1000;
     m_StartGrouping = false;
+	
 
     m_tenacityStack = 0;
 

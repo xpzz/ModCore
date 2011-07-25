@@ -614,8 +614,7 @@ class spell_blood_queen_bloodbolt : public SpellScriptLoader
 
             void HandleDummy()
             {
-                if (GetHitUnit()->GetTypeId() == TYPEID_PLAYER)
-                    GetCaster()->CastSpell(GetHitUnit(), SPELL_TWILIGHT_BLOODBOLT, true);
+                if (GetHitUnit()->GetTypeId() == TYPEID_PLAYER)  GetCaster()->CastSpell(GetHitUnit(), SPELL_TWILIGHT_BLOODBOLT, false);
             }
 
             void Register()
@@ -662,11 +661,11 @@ class spell_blood_queen_pact_of_the_darkfallen : public SpellScriptLoader
                 // we can do this, unitList is MAX 4 in size
                 for (itr = unitList.begin(); itr != itrEnd && remove; ++itr)
                 {
-                    if (!GetCaster()->IsWithinDist(*itr, 5.0f, false))
+                    if (!GetCaster()->IsWithinDist(*itr, 2.0f, false))
                         remove = false;
 
                     for (itr2 = unitList.begin(); itr2 != itrEnd && remove; ++itr2)
-                        if (itr != itr2 && !(*itr2)->IsWithinDist(*itr, 5.0f, false))
+                        if (itr != itr2 && !(*itr2)->IsWithinDist(*itr, 2.0f, false))
                             remove = false;
                 }
 
@@ -713,7 +712,7 @@ class spell_blood_queen_pact_of_the_darkfallen_dmg : public SpellScriptLoader
             {
                 SpellEntry const* damageSpell = sSpellStore.LookupEntry(SPELL_PACT_OF_THE_DARKFALLEN_DAMAGE);
                 int32 damage = SpellMgr::CalculateSpellEffectAmount(damageSpell, EFFECT_0);
-                float multiplier = 0.3375f + 0.1f * uint32(aurEff->GetTickNumber()/10); // do not convert to 0.01f - we need tick number/10 as INT (damage increases every 10 ticks)
+                float multiplier = 0.2375f + 0.1f * uint32(aurEff->GetTickNumber()/10); // do not convert to 0.01f - we need tick number/10 as INT (damage increases every 10 ticks)
                 damage = int32(damage * multiplier);
                 GetTarget()->CastCustomSpell(SPELL_PACT_OF_THE_DARKFALLEN_DAMAGE, SPELLVALUE_BASE_POINT0, damage, GetTarget(), true);
             }
